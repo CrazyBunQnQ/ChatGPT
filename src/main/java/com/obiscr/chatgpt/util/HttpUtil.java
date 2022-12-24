@@ -27,8 +27,8 @@ public class HttpUtil {
     private static final Logger LOG = LoggerFactory.getLogger(HttpUtil.class);
     private static final String LOGIN_URL = "https://chat.openai.com/api/auth/session";
 
-    public static final String DEFAULT_CONVERSATION_URL = "https://gpt.chatapi.art/backend-api/conversation";
-    public static final String OFFICIAL_CONVERSATION_URL = "https://chat.openai.com/backend-api/conversation";
+    public static final String DEFAULT_CONVERSATION_URL = "https://cc-api.sbaliyun.com/";
+    public static final String OFFICIAL_CONVERSATION_URL = "https://api.openai.com/v1/completions";
 
     public static final String EMPTY_RESPONSE = "# Ops\n" +
             "It looks like something went wrong, no data was response.";

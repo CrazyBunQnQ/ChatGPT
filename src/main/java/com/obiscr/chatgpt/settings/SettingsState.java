@@ -21,30 +21,27 @@ import org.jetbrains.annotations.Nullable;
 )
 public class SettingsState implements PersistentStateComponent<SettingsState> {
 
-  public String accessToken = "";
-  public String customizeUrl = "";
-  public String cloudFlareUrl = "";
-  public SettingConfiguration.SettingURLType urlType =
-          SettingConfiguration.SettingURLType.DEFAULT;
-  public String readTimeout = "10000";
-  public String connectionTimeout = "10000";
+    public String defaultApiKey = "";
+    public String accessToken = "";
+    public String customizeUrl = "";
+    public String cloudFlareUrl = "";
+    public SettingConfiguration.SettingURLType urlType =
+            SettingConfiguration.SettingURLType.DEFAULT;
+    public String readTimeout = "10000";
+    public String connectionTimeout = "10000";
 
-  public static SettingsState getInstance() {
-    return ApplicationManager.getApplication().getService(SettingsState.class);
-  }
+    public static SettingsState getInstance() {
+        return ApplicationManager.getApplication().getService(SettingsState.class);
+    }
 
-  @Nullable
-  @Override
-  public SettingsState getState() {
-    return this;
-  }
+    @Nullable
+    @Override
+    public SettingsState getState() {
+        return this;
+    }
 
-  @Override
-  public void loadState(@NotNull SettingsState state) {
-    XmlSerializerUtil.copyBean(state, this);
-  }
-
-  public String getAccessToken() {
-    return accessToken;
-  }
+    @Override
+    public void loadState(@NotNull SettingsState state) {
+        XmlSerializerUtil.copyBean(state, this);
+    }
 }

@@ -26,14 +26,27 @@ public abstract class AbstractParser implements SseParser{
         return sb.toString();
     }
 
+    public String parseGpt3(String response) {
+        JSONObject object = JSON.parseObject(response);
+        JSONArray resultArray = object.getJSONArray("choices");
+        StringBuilder sb = new StringBuilder();
+
+        for (Object s : resultArray) {
+            String text = JSON.parseObject(s.toString()).getString("text");
+            sb.append(text);
+        }
+
+        return sb.toString();
+    }
+
     public static String dispatchParse(String line) {
         SettingConfiguration.SettingURLType urlType = SettingsState.getInstance().urlType;
         switch (urlType) {
             case DEFAULT:
-                line =  new DefaultParser().parse(line);
+                line =  new DefaultParser().parseGpt3(line);
                 break;
             case OFFICIAL:
-                line =  new OfficialParser().parse(line);
+                line =  new OfficialParser().parseGpt3(line);
                 break;
             case CUSTOMIZE:
                 line =  new CustomizeParser().parse(line);

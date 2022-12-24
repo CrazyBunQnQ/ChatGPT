@@ -64,7 +64,6 @@
   <depends>org.intellij.plugins.markdown</depends>
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
-  <!--<depends>com.intellij.modules.platform</depends>-->
 
   <extensions defaultExtensionNs="com.intellij">
     <toolWindow id="ChatGPT" anchor="right" icon="/icons/toolWindow.svg" canCloseContents="true"
@@ -73,6 +72,7 @@
                              id="com.obiscr.chatgpt.settings.ChatGPTSettingsPanel"
                              displayName="ChatGPT"/>
     <applicationService serviceImplementation="com.obiscr.chatgpt.settings.SettingsState"/>
+    <applicationService serviceImplementation="com.obiscr.chatgpt.core.SendAction" />
     <notificationGroup id="ChatGPT Notification Group"
                        displayType="BALLOON"
                        key="ChatGPT.Notification"/>

@@ -71,7 +71,8 @@ public class ChatGPTSettingsPanel implements Configurable, Disposable {
 
         enableOptions(customizeChoice);
 
-        accessTokenField.getEmptyText().setText(ChatGPTBundle.message("ui.setting.url.official.token.empty_text"));
+        this.defaultChoice.setEnabled(false);
+        this.defaultApiKeyField.getEmptyText().setText(ChatGPTBundle.message("ui.setting.url.default.token.empty_text"));
         customizeUrlField.getEmptyText().setText(ChatGPTBundle.message("ui.setting.url.customize.url.empty_text"));
         cloudFlareUrlField.getEmptyText().setText(ChatGPTBundle.message("ui.setting.url.cloudflare.url.empty_text"));
         readTimeoutField.getEmptyText().setText(ChatGPTBundle.message("ui.setting.connection.read_timeout.empty_text"));
@@ -80,7 +81,7 @@ public class ChatGPTSettingsPanel implements Configurable, Disposable {
 
 
     private void enableOptions(Object source) {
-        UIUtil.setEnabled(defaultOptions, defaultChoice.equals(source), true);
+        UIUtil.setEnabled(defaultOptions, false, true);
         UIUtil.setEnabled(officialOptions, officialChoice.equals(source), true);
         UIUtil.setEnabled(customizeOptions, customizeChoice.equals(source), true);
         UIUtil.setEnabled(cloudflareOptions, cloudFlareChoice.equals(source), true);
@@ -91,7 +92,7 @@ public class ChatGPTSettingsPanel implements Configurable, Disposable {
         SettingsState state = SettingsState.getInstance();
 
         setUrlChoice(state.urlType);
-        accessTokenField.setText(state.accessToken);
+        defaultApiKeyField.setText(state.defaultApiKey);
         customizeUrlField.setText(state.customizeUrl);
         cloudFlareUrlField.setText(state.cloudFlareUrl);
         readTimeoutField.setText(state.readTimeout);
@@ -108,7 +109,7 @@ public class ChatGPTSettingsPanel implements Configurable, Disposable {
         SettingsState state = SettingsState.getInstance();
 
         return !state.urlType.equals(getUrlChoice()) ||
-                !StringUtil.equals(state.accessToken, accessTokenField.getText()) ||
+                !StringUtil.equals(state.defaultApiKey, defaultApiKeyField.getText()) ||
                 !StringUtil.equals(state.customizeUrl, customizeUrlField.getText()) ||
                 !StringUtil.equals(state.cloudFlareUrl, cloudFlareUrlField.getText()) ||
                 !StringUtil.equals(state.readTimeout, readTimeoutField.getText()) ||
@@ -120,7 +121,7 @@ public class ChatGPTSettingsPanel implements Configurable, Disposable {
         SettingsState state = SettingsState.getInstance();
 
         state.urlType = getUrlChoice();
-        state.accessToken = accessTokenField.getText();
+        state.defaultApiKey = defaultApiKeyField.getText();
         state.customizeUrl = customizeUrlField.getText();
         state.cloudFlareUrl = cloudFlareUrlField.getText();
 
@@ -156,7 +157,7 @@ public class ChatGPTSettingsPanel implements Configurable, Disposable {
 
         assert selected != null;
 
-        return (SettingConfiguration.SettingURLType)selected.getClientProperty("value");
+        return (SettingConfiguration.SettingURLType) selected.getClientProperty("value");
     }
 
     private static void register(@NotNull JBRadioButton choice, @NotNull SettingConfiguration.SettingURLType value) {
@@ -175,10 +176,10 @@ public class ChatGPTSettingsPanel implements Configurable, Disposable {
     private void createUIComponents() {
         urlTitledBorderBox = new JPanel(new BorderLayout());
         TitledSeparator tsUrl = new TitledSeparator(ChatGPTBundle.message("ui.setting.url.title"));
-        urlTitledBorderBox.add(tsUrl,BorderLayout.CENTER);
+        urlTitledBorderBox.add(tsUrl, BorderLayout.CENTER);
 
         connectionTitledBorderBox = new JPanel(new BorderLayout());
         TitledSeparator tsConnection = new TitledSeparator(ChatGPTBundle.message("ui.setting.connection.title"));
-        connectionTitledBorderBox.add(tsConnection,BorderLayout.CENTER);
+        connectionTitledBorderBox.add(tsConnection, BorderLayout.CENTER);
     }
 }

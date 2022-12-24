@@ -127,7 +127,7 @@
                   <text resource-bundle="messages/ChatGPTBundle" key="ui.setting.url.official.token.label"/>
                 </properties>
               </component>
-              <component id="2a0bb" class="com.intellij.ui.components.JBTextField" binding="accessTokenField">
+              <component id="2a0bb" class="com.intellij.ui.components.JBTextField" binding="defaultApiKeyField">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
                     <preferred-size width="80" height="-1"/>

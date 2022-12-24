@@ -35,4 +35,21 @@ public class OfficialBuilder {
         }
         return result;
     }
+
+    public static JSONObject buildGpt3(String text, int maxToken) {
+        JSONObject result = new JSONObject();
+        result.put("model", "text-davinci-003");
+        result.put("prompt", text);
+        result.put("temperature", 0.7);
+        result.put("max_tokens", maxToken);
+        result.put("stream", false);
+        result.put("top_p", 1);
+        result.put("frequency_penalty", 0);
+        result.put("presence_penalty", 0);
+        return result;
+    }
+
+    public static JSONObject buildGpt3(String text) {
+        return buildGpt3(text, 3000);
+    }
 }

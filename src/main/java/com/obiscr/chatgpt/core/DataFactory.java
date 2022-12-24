@@ -2,6 +2,7 @@ package com.obiscr.chatgpt.core;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
+import com.obiscr.chatgpt.ui.MainPanel;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
@@ -19,7 +20,7 @@ public class DataFactory {
     private ToolWindow toolWindow;
     private String conversationId;
     private final List<Map<String,String>> conversations = new LinkedList<>();
-
+    private MainPanel mainPanel;
 
     private DataFactory() {
 
@@ -65,5 +66,13 @@ public class DataFactory {
             }
         }
         return sb.toString();
+    }
+
+    public MainPanel getMainPanel() {
+        return this.mainPanel;
+    }
+
+    public void setMainPanel(MainPanel mainPanel) {
+        this.mainPanel = mainPanel;
     }
 }
