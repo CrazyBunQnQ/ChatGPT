@@ -1,13 +1,13 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.obiscr.chatgpt.settings;
 
-import com.intellij.icons.AllIcons;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.ui.MessageDialogBuilder;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.TitledSeparator;
+import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBRadioButton;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.util.ui.JBUI;
@@ -33,16 +33,18 @@ public class ChatGPTSettingsPanel implements Configurable, Disposable {
     private JPanel officialOptions;
     private JPanel customizeOptions;
     private JPanel urlTitledBorderBox;
-    private JPanel connectionTitledBorderBox;
     private JBTextField emailField;
     private JBTextField passwordField;
-    private JPanel proxyTitledBorderBox;
     private JEditorPane accessTokenField;
     private JTextField expireTimeField;
     private JButton loginButton;
     private JPanel officialIntroducePanel;
     private JPanel customizeIntroducePanel;
-
+    private JBLabel accountHelpLabel;
+    private JBLabel customizeHelpLabel;
+    private JLabel accessTokenHelpLabel;
+    private JPanel modelTitledBorderBox;
+    private JComboBox<String> comboCombobox;
 
 
     public ChatGPTSettingsPanel() {
@@ -57,6 +59,7 @@ public class ChatGPTSettingsPanel implements Configurable, Disposable {
                 enableUrlOptions(e.getSource());
             }
         };
+
         officialChoice.addItemListener(connectionTypeChangedListener);
         customizeChoice.addItemListener(connectionTypeChangedListener);
         enableUrlOptions(customizeChoice);
@@ -94,6 +97,8 @@ public class ChatGPTSettingsPanel implements Configurable, Disposable {
             myMainPanel.updateUI();
             apply();
         });
+
+        initHelp();
     }
 
 
@@ -113,6 +118,7 @@ public class ChatGPTSettingsPanel implements Configurable, Disposable {
         expireTimeField.setText(state.expireTime);
 
         customizeUrlField.setText(state.customizeUrl);
+        comboCombobox.setSelectedItem(state.chatGptModel);
     }
 
     @Override
@@ -129,7 +135,9 @@ public class ChatGPTSettingsPanel implements Configurable, Disposable {
                 !StringUtil.equals(state.email, emailField.getText()) ||
                 !StringUtil.equals(state.password, passwordField.getText()) ||
                 !StringUtil.equals(state.accessToken, accessTokenField.getText()) ||
-                !StringUtil.equals(state.expireTime, expireTimeField.getText());
+                !StringUtil.equals(state.expireTime, expireTimeField.getText()) ||
+                !state.chatGptModel.equals(comboCombobox.getSelectedItem())
+                ;
     }
 
     @Override
@@ -142,6 +150,7 @@ public class ChatGPTSettingsPanel implements Configurable, Disposable {
         state.password = passwordField.getText();
         state.accessToken = accessTokenField.getText();
         state.expireTime = expireTimeField.getText();
+        state.chatGptModel = comboCombobox.getSelectedItem().toString();
     }
 
     @Override
@@ -183,12 +192,19 @@ public class ChatGPTSettingsPanel implements Configurable, Disposable {
         TitledSeparator tsUrl = new TitledSeparator(ChatGPTBundle.message("ui.setting.url.title"));
         urlTitledBorderBox.add(tsUrl,BorderLayout.CENTER);
 
-        connectionTitledBorderBox = new JPanel(new BorderLayout());
-        TitledSeparator tsConnection = new TitledSeparator(ChatGPTBundle.message("ui.setting.connection.title"));
-        connectionTitledBorderBox.add(tsConnection,BorderLayout.CENTER);
+        modelTitledBorderBox = new JPanel(new BorderLayout());
+        TitledSeparator mdUrl = new TitledSeparator("Model Settings");
+        modelTitledBorderBox.add(mdUrl,BorderLayout.CENTER);
+    }
 
-        proxyTitledBorderBox = new JPanel(new BorderLayout());
-        TitledSeparator tsProxy = new TitledSeparator("Proxy Settings");
-        proxyTitledBorderBox.add(tsProxy,BorderLayout.CENTER);
+    private void initHelp() {
+        accountHelpLabel.setFont(JBUI.Fonts.smallFont());
+        accountHelpLabel.setForeground(UIUtil.getContextHelpForeground());
+
+        customizeHelpLabel.setFont(JBUI.Fonts.smallFont());
+        customizeHelpLabel.setForeground(UIUtil.getContextHelpForeground());
+
+        accessTokenHelpLabel.setFont(JBUI.Fonts.smallFont());
+        accessTokenHelpLabel.setForeground(UIUtil.getContextHelpForeground());
     }
 }

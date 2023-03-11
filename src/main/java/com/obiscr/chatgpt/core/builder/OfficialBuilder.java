@@ -1,10 +1,11 @@
 package com.obiscr.chatgpt.core.builder;
 
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.intellij.openapi.project.Project;
 import com.obiscr.chatgpt.core.ConversationManager;
+import com.obiscr.chatgpt.settings.OpenAISettingsState;
+import com.obiscr.chatgpt.ui.MessageGroupComponent;
 import com.obiscr.chatgpt.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,7 +43,8 @@ public class OfficialBuilder {
         if (StringUtil.isNotEmpty(conversationId)) {
             result.put("conversation_id",conversationId);
         }
-        result.put("model","text-davinci-002-render-sha");
+        OpenAISettingsState settingsState = OpenAISettingsState.getInstance();
+        result.put("model",settingsState.chatGptModel);
         return result;
     }
 
@@ -58,20 +60,31 @@ public class OfficialBuilder {
         return result;
     }
 
-    public static JSONObject buildGpt3(String text, int maxToken) {
+    public static JSONObject buildGpt35Turbo(String text, MessageGroupComponent component) {
         JSONObject result = new JSONObject();
-        result.put("model", "text-davinci-003");
-        result.put("prompt", text);
-        result.put("temperature", 0.7);
-        result.put("max_tokens", maxToken);
-        result.put("stream", false);
-        result.put("top_p", 1);
-        result.put("frequency_penalty", 0);
-        result.put("presence_penalty", 0);
+        OpenAISettingsState settingsState = OpenAISettingsState.getInstance();
+        result.put("model",settingsState.gpt35Model);
+        component.getMessages().add(userMessage(text));
+        result.put("messages",component.getMessages());
         return result;
     }
 
-    public static JSONObject buildGpt3(String text) {
-        return buildGpt3(text, 3000);
+    private static JSONObject message(String role, String text) {
+        JSONObject message = new JSONObject();
+        message.put("role",role);
+        message.put("content",text);
+        return message;
+    }
+
+    public static JSONObject userMessage(String text) {
+        return message("user",text);
+    }
+
+    public static JSONObject systemMessage(String text) {
+        return message("system",text);
+    }
+
+    public static JSONObject assistantMessage(String text) {
+        return message("assistant",text);
     }
 }
